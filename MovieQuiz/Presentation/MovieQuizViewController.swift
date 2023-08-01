@@ -133,7 +133,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate
         
         let alertModel = AlertModel(title: "Игра окончена",
                                     message: makeResultMessage(),
-                                    buttonText: "Ok",
+                                    buttonText: "Сыграть еще раз",
                                     buttonAction: { [weak self] in
             self?.currentQuestionIndex = 0
             self?.correctAnswers = 0
@@ -151,7 +151,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate
         }
         
        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
-        let totalPlayCountLine = "Количество сыгранных квизов: \( statisticService.gamesCount))"
+        let totalPlayCountLine = "Количество сыгранных квизов: \( statisticService.gamesCount)"
         let currentGamesResultLine = "Ваш результат: \(correctAnswers)\\\(questionsAmount)"
         let bestGameInfoLine = "Рекорд: \(bestGame.correct)\\\(bestGame.total)" + " (\(bestGame.date.dateTimeString))"
         let averageAccuracyLine = "Средняя точность: \(accuracy)%"

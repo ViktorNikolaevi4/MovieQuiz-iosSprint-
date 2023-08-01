@@ -97,7 +97,7 @@ extension StatisticServiceImplementation: StatisticService {
         self.gamesCount += 1
         
         let date = dateProvader()
-        let currentBestGame = GameRecord(correct: correct, total: total, date: date)
+        let currentBestGame = GameRecord(correct: count, total: amount, date: date)
         if let previousBestGame = bestGame {
             if currentBestGame > previousBestGame {
                 bestGame = currentBestGame
