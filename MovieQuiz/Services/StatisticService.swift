@@ -156,8 +156,8 @@ extension StatisticServiceImplementation: StatisticService {
     }
     
     func store(correct count: Int, total amount: Int) {
-        self.correct += correct
-        self.total += total
+        self.correct += count
+        self.total += amount
         self.gamesCount += 1
         
         let date = dateProvader()
