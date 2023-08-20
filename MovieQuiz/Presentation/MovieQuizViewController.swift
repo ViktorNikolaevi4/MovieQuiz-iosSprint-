@@ -12,11 +12,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate
     }
     
     
+    @IBOutlet weak var buttonYes: UIButton!
+    @IBOutlet weak var buttonNo: UIButton!
     
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     
+
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
@@ -25,6 +29,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
+    
+    
+    private func showLoadingIndicator () {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        func  hideLoadingIndicator() {}
+        
+        let model = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз") { [ weak self] in
+            guard let self = self else {return}
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            
+            self.questionFactory?.requestNextQuestion()
+        }
+        
+        alertPresenter?.show(alertModel: model)
+    }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -77,9 +102,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate
             
     }
 
-        
+
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        sender.isEnabled = false
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -90,6 +116,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate
     
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        sender.isEnabled = false
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -115,7 +142,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate
             self.showNextQuestionOrResult()
         }
     }
-        private func showNextQuestionOrResult() {
+    private func showNextQuestionOrResult() {
+        buttonNo.isEnabled = true
+        buttonYes.isEnabled = true
+        
             if currentQuestionIndex == questionsAmount - 1 {
                 showFinalResults()
             }
